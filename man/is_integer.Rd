@@ -18,3 +18,7 @@ logical vector
 Check if each element of a numeric vector can be interpreted as integer
 numbers.
 }
+\examples{
+is_integer(1)
+is_integer(1.1)
+}

@@ -10,6 +10,8 @@
 #' @export
 #'
 #' @examples
+#' is_integer(1)
+#' is_integer(1.1)
 is_integer <- function(x, tol = .Machine$double.eps^0.5){
   abs(x - round(x)) < tol
 }
