@@ -1,6 +1,6 @@
 test_that("multiplication works", {
 
-  x <- as.data.frame(
+  x <- data.table::as.data.table(
     t(matrix(c(
       1,  1,  2,
       1,  2,  4,
@@ -16,14 +16,28 @@ test_that("multiplication works", {
   names(x) <- c("group", "start_date", "end_date")
 
 
-  vec <- c("start_date", "end", NULL)
-start = "start_date"
-end = "end_date"
-group = "group"
-keep = NULL
-max_gap = 1
-
   test <- smooth_periods(x, "start_date", "end_date", "group")
+
+
+
+  start = "start"
+  end = "end"
+  group = "group"
+  keep = NULL
+  max_gap = 1
+
+  set.seed(1)
+  n_row <- 1e7
+  x <- data.table::data.table(
+    group = ceiling(n_row * runif(n_row) / 10) ,
+    start = ceiling(runif(n_row) * 10)
+  )
+  x$end <- x$start + rbinom(n_row, 5, 0.3)
+
+  system.time(
+    test <- smooth_periods(x, "start", "end", "group")
+  )
+
 
   expect_equal(2 * 2, 4)
 })
