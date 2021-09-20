@@ -9,9 +9,9 @@ smooth_periods(x, start = "start", end = "end", group = NULL, max_gap = 1L)
 \arguments{
 \item{x}{data.table}
 
-\item{start}{string. Variable name of numeric variable with start dates.}
+\item{start}{string. Variable name of numeric/date variable with start dates.}
 
-\item{end}{string. Variable names of numeric variable with end dates.}
+\item{end}{string. Variable names of numeric/date variable with end dates.}
 
 \item{group}{character vector. Names of grouping variables.}
 

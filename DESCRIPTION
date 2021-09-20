@@ -17,3 +17,5 @@ Suggests:
     testthat
 Depends: 
     data.table
+Imports: 
+    methods

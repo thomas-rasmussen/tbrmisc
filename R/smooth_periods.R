@@ -4,8 +4,8 @@
 #' continuation of each others are combined into a single data line.
 #'
 #' @param x data.table
-#' @param start string. Variable name of numeric variable with start dates.
-#' @param end string. Variable names of numeric variable with end dates.
+#' @param start string. Variable name of numeric/date variable with start dates.
+#' @param end string. Variable names of numeric/date variable with end dates.
 #' @param group character vector. Names of grouping variables.
 #' @param max_gap Non-negative integer. Maximum allowed gap between time-periods
 #'   when smoothing.
@@ -30,14 +30,14 @@ smooth_periods <- function(x,
   if (!(is.character(start) & length(start) == 1)) {
     stop("'start' must be a character vector of length 1")
   }
-  if (!is.numeric(x[[start]])) {
-    stop("'start' must refer to a a numeric variable in 'x'")
+  if (!is.numeric(x[[start]]) & !is_date(x[[start]])) {
+    stop("'start' must refer to a a numeric/date variable in 'x'")
   }
   if (!(is.character(end) & length(end) == 1)) {
       stop("'end' must be a character vector of length 1")
   }
-  if (!is.numeric(x[[end]])) {
-      stop("'end' must refer to a numeric variable in 'x'")
+  if (!is.numeric(x[[end]]) & !is_date(x[[end]])) {
+      stop("'end' must refer to a numeric/date variable in 'x'")
   }
   if (!is.null(group)) {
     if (!is.character(group)) {

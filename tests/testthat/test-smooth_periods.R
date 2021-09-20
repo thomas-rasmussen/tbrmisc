@@ -82,3 +82,17 @@ test_that("'max_gap' argument works correctly", {
   expect_equal(smooth_periods(x, max_gap = 0), smoothed_correct0)
   expect_equal(smooth_periods(x, max_gap = 1), smoothed_correct1)
 })
+
+test_that("date variables work", {
+  x <- data.table(
+    start = c(as.Date("2020-01-01"), as.Date("2020-01-03")),
+    end = c(as.Date("2020-01-02"), as.Date("2020-01-05"))
+  )
+  smoothed_correct <- data.table(
+    start = as.Date("2020-01-01"),
+    end = as.Date("2020-01-05")
+  )
+
+  expect_equal(smooth_periods(x), smoothed_correct)
+
+})
