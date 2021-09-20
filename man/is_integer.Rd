@@ -2,7 +2,7 @@
 % Please edit documentation in R/is_integer.R
 \name{is_integer}
 \alias{is_integer}
-\title{Check if numeric}
+\title{Check if integer(ish)}
 \usage{
 is_integer(x, tol = .Machine$double.eps^0.5)
 }
