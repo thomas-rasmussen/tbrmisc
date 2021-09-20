@@ -2,3 +2,5 @@
 
 export(is_integer)
 export(is_valid_variable_name)
+export(smooth_periods)
+import(data.table)
