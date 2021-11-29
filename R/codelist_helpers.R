@@ -155,7 +155,7 @@ codelist_to_df <- function(x) {
     include_col <- as.data.frame(lapply(x[[i]]$codes_include, paste, collapse = " "))
     names(include_col) <- paste0("codes_include_", names(include_col))
     exclude_col <- as.data.frame(lapply(x[[i]]$codes_exclude, paste, collapse = " "))
-    names(exclude_col) <- paste0("codes_exclude", names(exclude_col))
+    names(exclude_col) <- paste0("codes_exclude_", names(exclude_col))
     i_df <- as.data.frame(x[[i]][!names(x[[i]]) %in% c("codes_include", "codes_exclude")])
     i_df <- cbind(i_df, include_col, exclude_col)
     if (i == 1) df <- i_df
