@@ -25,9 +25,10 @@ def_template <- function(
     manual_def = FALSE,
     notes = "",
     def_type = c(
-      "yes_no",
-      "most_recent_date",
-      "most_recent_result",
+      "first_date",
+      "last_date",
+      "first_result",
+      "last_result",
       "median_result",
       "mean_result",
       "max_result",
