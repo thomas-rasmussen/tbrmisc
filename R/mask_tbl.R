@@ -103,9 +103,9 @@ mask_tbl <- function(x) {
           )
           next()
         # If no individual numbers needs to be masked, we move on to check that
-        # at least two numbers have been masked. If not, mask the lowest non-masked
-        # number
-        } else if (n_masked < 2) {
+        # no, or at least two, numbers have been masked. If not, mask the lowest
+        # non-masked # number
+        } else if (n_masked == 1) {
           i_dat[[j_col]]<- ifelse(
             i_dat[[j_col_num]] == min_unmasked, "<5", i_dat[[j_col]]
           )
@@ -116,7 +116,7 @@ mask_tbl <- function(x) {
         # If also at least two numbers have been masked, we check that the
         # average of the masked values are at least 1. If not, mask the lowest
         # non-masked number
-        } else if (avg_masked < 1) {
+        } else if (!is.nan(avg_masked) & avg_masked < 1) {
           i_dat[[j_col]]<- ifelse(
             i_dat[[j_col_num]] == min_unmasked, "<5", i_dat[[j_col]]
           )

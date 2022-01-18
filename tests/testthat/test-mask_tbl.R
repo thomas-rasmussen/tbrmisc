@@ -74,3 +74,12 @@ test_that("using tbl_summary() by-argument works", {
   }
 })
 
+test_that("categorical variables does not get unnecesarily masked", {
+  if (requireNamespace("gtsummary", quietly = TRUE)) {
+    dat <- data.frame(var = c(rep(1, 10), rep(2, 10))
+    )
+    x <- gtsummary::tbl_summary(dat)
+    x_masked <- mask_tbl(x)
+    expect_equal(x, x_masked)
+  }
+})
