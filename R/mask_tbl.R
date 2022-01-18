@@ -81,9 +81,22 @@ mask_tbl <- function(x) {
       j_col_num <- paste0(".", j_col, "_num")
       stop <- FALSE
       while(isFALSE(stop)) {
-        # Find lowest unmasked number
-        min_unmasked <- i_dat[i_dat$.mask == 0, ]
-        min_unmasked <- suppressWarnings(min(min_unmasked[[j_col_num]]))
+        # Find lowest unmasked number and corresponding row_id
+        # If there are multiple rows with the same min, we pick the first row_id
+        min_val <- i_dat[i_dat$.mask == 0, ]
+        min_val <- suppressWarnings(min(min_val[[j_col_num]]))
+        min_val_rowid <- i_dat[i_dat$.mask == 0 & i_dat[[j_col_num]] == min_val, ]
+        min_val_rowid <- min_val_rowid$.row_id[1]
+
+
+        # Find lowest non-zero unmasked number and corresponding row_id.
+        # If there are multiple rows wit the same min, we pick the first row_id
+        min_nonzero_val <- i_dat[i_dat$.mask == 0 & i_dat[[j_col_num]] != 0, ]
+        min_nonzero_val <- suppressWarnings(
+          min(min_nonzero_val[[j_col_num]])
+        )
+        min_nonzero_rowid <- i_dat[i_dat$.mask == 0 & i_dat[[j_col_num]] == min_nonzero_val, ]
+        min_nonzero_rowid <- min_nonzero_rowid$.row_id[1]
 
         # Find number of observations masked so far
         n_masked <- sum(i_dat$.mask)
@@ -92,36 +105,36 @@ mask_tbl <- function(x) {
         avg_masked <- i_dat[i_dat$.mask == 1, ]
         avg_masked <- mean(avg_masked[[j_col_num]])
 
-        # If the lowest unmasked value is between 0 and 5, mask it and go to
-        # next iteration
-        if (0 < min_unmasked & min_unmasked < 5) {
+        # If the lowest non-zero unmasked value is between 0 and 5, mask it and
+        # go to next iteration
+        if (0 < min_nonzero_val & min_nonzero_val < 5) {
           i_dat[[j_col]]<- ifelse(
-            i_dat[[j_col_num]] == min_unmasked, "<5", i_dat[[j_col]]
+            i_dat$.row_id ==  min_nonzero_rowid, "<5", i_dat[[j_col]]
           )
           i_dat[[".mask"]] <- ifelse(
-            i_dat[[j_col_num]] == min_unmasked, 1, i_dat[[".mask"]]
+            i_dat$.row_id == min_nonzero_rowid, 1, i_dat[[".mask"]]
           )
           next()
         # If no individual numbers needs to be masked, we move on to check that
         # no, or at least two, numbers have been masked. If not, mask the lowest
-        # non-masked # number
+        # non-masked number
         } else if (n_masked == 1) {
           i_dat[[j_col]]<- ifelse(
-            i_dat[[j_col_num]] == min_unmasked, "<5", i_dat[[j_col]]
+            i_dat$.row_id ==  min_val_rowid, "<5", i_dat[[j_col]]
           )
           i_dat[[".mask"]] <- ifelse(
-            i_dat[[j_col_num]] == min_unmasked, 1, i_dat[[".mask"]]
+            i_dat$.row_id ==  min_val_rowid, 1, i_dat[[".mask"]]
           )
           next()
-        # If also at least two numbers have been masked, we check that the
-        # average of the masked values are at least 1. If not, mask the lowest
-        # non-masked number
+        # If also zero, or at least two, numbers have been masked, we check that
+        # the average of the masked values are at least 1. If not, mask the
+        # lowest non-masked number
         } else if (!is.nan(avg_masked) & avg_masked < 1) {
           i_dat[[j_col]]<- ifelse(
-            i_dat[[j_col_num]] == min_unmasked, "<5", i_dat[[j_col]]
+            i_dat$.row_id ==  min_val_rowid, "<5", i_dat[[j_col]]
           )
           i_dat[[".mask"]] <- ifelse(
-            i_dat[[j_col_num]] == min_unmasked, 1, i_dat[[".mask"]]
+            i_dat$.row_id ==  min_val_rowid, 1, i_dat[[".mask"]]
           )
           next()
         }

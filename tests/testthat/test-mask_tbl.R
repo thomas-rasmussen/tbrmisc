@@ -83,3 +83,17 @@ test_that("categorical variables does not get unnecesarily masked", {
     expect_equal(x, x_masked)
   }
 })
+
+test_that("factor with missing levels is masked correctly", {
+  if (requireNamespace("gtsummary", quietly = TRUE)) {
+    dat <- data.frame(var = (c(rep("A", 4), rep("E", 10))))
+    dat$var <- factor(dat$var, levels = c("A","B", "C", "D", "E"))
+
+    x <- gtsummary::tbl_summary(dat)
+    x_masked <- mask_tbl(x)
+    expect_equal(
+      x_masked$table_body$stat_0,
+      c(NA, "<5", "<5", "0 (0%)", "0 (0%)", "10 (71%)")
+    )
+  }
+})
