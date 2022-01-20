@@ -10,7 +10,9 @@ if (getRversion() >= "2.15.1") {
 #'
 #' Masks person-sensitive data in a tbl_summary object made using the gtsummary
 #' package. Function should work as intended, but is very experimental and
-#' insufficiently undocumented and tested.
+#' insufficiently undocumented and tested. The whole approach of editing
+#' the table_body part of the tbl_summary object is probably also fundamentally
+#' flawed approach. This is pretty hack-ish.
 #'
 #' @param x tbl_summary object.
 #'
@@ -46,8 +48,21 @@ mask_tbl <- function(x) {
 
   #### Mask continuous variables ####
 
-  # Not necessary in ordinary cases, but could be implemented if needed
+  # Mask unknown counts if necesary
+  cont_var <- unique(x_body$variable[x_body$var_type == "continuous"])
 
+  for (i in seq_along(cont_var)) {
+    for (j in seq_along(stat_col)) {
+      tmp <- eval(parse( text = paste0("x_body$.", stat_col[j], "_num")))
+      x_body[[stat_col[j]]] <- ifelse(
+        x_body$variable == cont_var[i] &
+        x_body$row_type == "missing" &
+        0 < tmp & tmp < 5,
+        "<5",
+        x_body[[stat_col[j]]]
+      )
+    }
+  }
 
   #### Mask binary variables ####
 

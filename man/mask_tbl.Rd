@@ -18,7 +18,9 @@ Mask person-sensitive data in a table
 \details{
 Masks person-sensitive data in a tbl_summary object made using the gtsummary
 package. Function should work as intended, but is very experimental and
-insufficiently undocumented and tested.
+insufficiently undocumented and tested. The whole approach of editing
+the table_body part of the tbl_summary object is probably also fundamentally
+flawed approach. This is pretty hack-ish.
 }
 \examples{
 \dontrun{

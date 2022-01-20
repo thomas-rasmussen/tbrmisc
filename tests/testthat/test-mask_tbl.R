@@ -97,3 +97,22 @@ test_that("factor with missing levels is masked correctly", {
     )
   }
 })
+
+test_that("missing rows for continuous variables are properly masked", {
+  if (requireNamespace("gtsummary", quietly = TRUE)) {
+    dat <- data.frame(
+      var1 = c(rep(1, 10), rep(NA, 4)),
+      var2 = c(rep(1, 8), rep(NA, 6))
+      )
+
+    x <- gtsummary::tbl_summary(
+      dat, type = list(var1 ~ "continuous", var2 ~ "continuous")
+      )
+    x_masked <- mask_tbl(x)
+    expect_equal(
+      x_masked$table_body$stat_0,
+      c("1.0000 (1.0000, 1.0000)", "<5",
+      "1.0000 (1.0000, 1.0000)", "6")
+    )
+  }
+})
