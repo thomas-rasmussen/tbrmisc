@@ -41,9 +41,9 @@ test_that("masking categorical variables works", {
     x_masked <- mask_tbl(x)
     expect_equal(
       x_masked$table_body$stat_0,
-      c(NA, "<5", "<5",
+      c(NA, "<5", "*",
         NA, "<5", "<5", "8 (67%)",
-        NA, "<5", "<5", "6 (50%)")
+        NA, "<5", "*", "6 (50%)")
     )
   }
 })
@@ -93,7 +93,7 @@ test_that("factor with missing levels is masked correctly", {
     x_masked <- mask_tbl(x)
     expect_equal(
       x_masked$table_body$stat_0,
-      c(NA, "<5", "<5", "0 (0%)", "0 (0%)", "10 (71%)")
+      c(NA, "<5", "*", "0 (0%)", "0 (0%)", "10 (71%)")
     )
   }
 })
@@ -113,6 +113,25 @@ test_that("missing rows for continuous variables are properly masked", {
       x_masked$table_body$stat_0,
       c("1.0000 (1.0000, 1.0000)", "<5",
       "1.0000 (1.0000, 1.0000)", "6")
+    )
+  }
+})
+
+test_that("values masked to avoid backwards counting", {
+  if (requireNamespace("gtsummary", quitely = TRUE)) {
+    dat <- data.frame(var = c(1, rep(2, 5), rep(3, 10)))
+    x <- gtsummary::tbl_summary(dat)
+    x_masked <- mask_tbl(x)
+    expect_equal(
+      x_masked$table_body$stat_0,
+      c(NA, "<5", "*", "10 (62%)")
+    )
+    dat <- data.frame(var = c(1, 2, rep(3, 10)))
+    x <- gtsummary::tbl_summary(dat)
+    x_masked <- mask_tbl(x)
+    expect_equal(
+      x_masked$table_body$stat_0,
+      c(NA, "<5", "<5", "10 (83%)")
     )
   }
 })

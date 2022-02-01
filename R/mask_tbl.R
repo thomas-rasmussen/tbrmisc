@@ -135,7 +135,7 @@ mask_tbl <- function(x) {
         # non-masked number
         } else if (n_masked == 1) {
           i_dat[[j_col]]<- ifelse(
-            i_dat$.row_id ==  min_val_rowid, "<5", i_dat[[j_col]]
+            i_dat$.row_id ==  min_val_rowid, "*", i_dat[[j_col]]
           )
           i_dat[[".mask"]] <- ifelse(
             i_dat$.row_id ==  min_val_rowid, 1, i_dat[[".mask"]]
