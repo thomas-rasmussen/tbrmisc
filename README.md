@@ -6,14 +6,7 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-Miscellaneous R functions
+Miscellaneous R functions.
 
-## Installation
-
-You can install the development version of tbrmisc
-[GitHub](https://github.com/) with:
-
-``` r
-# install.packages("devtools")
-devtools::install_github("thomas-rasmussen/tbrmisc")
-```
+Functions in this package are experimental and will often be modified/deleted with no attention to
+backwards compatibility. Use functions cautiously, and record the SHA of the commit used to install the package.
